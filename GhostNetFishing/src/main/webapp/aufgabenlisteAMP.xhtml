@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>AufgabenlisteAMP</title>
+</h:head>
+
+<h:body>
+	<h1>Aufgabenliste: Anonyme-Meldene-Person</h1>
+
+	<h:form>
+		<!-- Tabelle für bestehende Aufgaben -->
+		<p:dataTable var="aufgabe" value="#{controller.liste}"
+			style="width:100%">
+			<p:column headerText="Breitengrad in °">
+				<h:outputText value="#{aufgabe.breitengrad}" />
+			</p:column>
+			<p:column headerText="Längengrad in °">
+				<h:outputText value="#{aufgabe.laengengrad}" />
+			</p:column>
+			<p:column headerText="Größe in m²">
+				<h:outputText value="#{aufgabe.groesse}" />
+			</p:column>
+			<p:column headerText="Status">
+				<h:outputText value="#{aufgabe.status.beschreibung}" />
+			</p:column>
+		</p:dataTable>
+		
+		<!-- Tabelle für die Erzeugung neuer Netzte -->
+		<h:panelGrid columns="2" style="margin-top:20px;">
+			<h:outputLabel for="breitengrad" value="Breitengrad in °:" />
+			<h:inputText id="breitengrad"
+				value="#{controller.neueAufgabe.breitengrad}" />
+
+			<h:outputLabel for="laengengrad" value="Längengrad in °:" />
+			<h:inputText id="laengengrad"
+				value="#{controller.neueAufgabe.laengengrad}" />
+
+
+			<h:outputLabel for="groesse" value="Größe in m²:" />
+			<h:inputText id="groesse"
+				value="#{controller.neueAufgabe.groesse}" required="true"
+				requiredMessage="#{msg['groesse.required']}">
+				<f:validateLongRange minimum="1" />
+			</h:inputText>
+			
+			<!-- Die Fehlermeldung soll sich über beide Spalten erstrecken -->
+			<h:outputText value="" />
+			
+			<!-- Inputhidden, status von neuen Geisternetzen soll immer Gemeldet" haben -->
+			<h:inputHidden id="status"
+				value="#{controller.neueAufgabe.status}" />
+		</h:panelGrid>
+		<p:message for="groesse" style="margin: 0.3em 0; min-height: 1.5em;" />
+		<br />
+
+
+		<p:commandButton value="Netz Hinzufügen" icon="pi pi-plus"
+			action="#{controller.addAufgabe}" update="@form"
+			style="margin-top:10px;" />
+		<p:commandButton value="Zurück" action="#{loginController.zurueck}"
+			immediate="true" style="margin:10px;" /> 	
+    </h:form>
+    
+    <!-- Status-Erklärungen als Info-Karte -->
+	<p:card style="margin-top:20px; max-width: 600px;">
+		<f:facet name="title">
+        Status-Erklärungen
+    </f:facet>
+
+		<h:outputText
+			value=" − Gemeldet (Eine meldende Person hat das Geisternetz im System erfasst.)" />
+		<br />
+		<h:outputText
+			value=" − Bergung bevorstehend (Eine bergende Person hat die Bergung angekündigt.)" />
+		<br />
+		<h:outputText
+			value=" − Geborgen (Eine bergende Person hat das Geisternetz erfolgreich geborgen.)" />
+		<br />
+		<h:outputText
+			value=" − Verschollen (Eine beliebige Person hat festgestellt, dass das Geisternetz am gemeldeten Standort nicht
+auffindbar ist.)" />
+
+
+	</p:card>
+
+</h:body>
+
+</html>

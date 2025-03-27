@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Ghost Net Fishing by Shea Sepherd</title>
+	<!-- Einbinden des externen Stylesheets -->
+	<h:outputStylesheet library="css" name="styles.css" />
+</h:head>
+
+<h:body>
+	<h1>Ghost Net Fishing</h1>
+
+	<h:form styleClass="form-container">
+		<p:card styleClass="login-card">
+
+			<!-- Name-Eingabefeld -->
+			<div class="form-field">
+				<p:outputLabel value="Name:" for="name" />
+				<p:inputText id="name" value="#{loginController.name}"
+					styleClass="input-text">
+					<!-- Aktualisiert die Buttons bei Tasteneingabe -->
+					<p:ajax event="keyup" update="btnAMP btnMP btnBP" />
+				</p:inputText>
+			</div>
+
+			<!-- Telefonnummer-Eingabefeld (nur Zahlen erlaubt) -->
+			<div class="form-field">
+				<p:outputLabel value="Telefonnummer: +49" for="tel" />
+				<p:inputText id="tel" value="#{loginController.tel}"
+					styleClass="input-text">
+					<!-- Nur Ziffern erlaubt -->
+					<f:validateRegex pattern="^\d+$" />
+					<!-- Aktualisiert die Buttons bei Tasteneingabe -->
+					<p:ajax event="keyup" update="btnAMP btnMP btnBP" />
+				</p:inputText>
+			</div>
+
+			<!-- Auswahlbuttons für Login-Rollen -->
+			<div class="form-buttons">
+				<!-- Nur Name erlaubt, Telefonnummer muss leer sein -->
+				<p:commandButton id="btnAMP"
+					value="Login als Anonyme-Meldene-Person"
+					action="#{loginController.registrationAMP}"
+					disabled="#{empty loginController.name or not empty loginController.tel}"
+					styleClass="login-button" />
+
+				<!-- Name und Telefonnummer müssen gefüllt sein -->
+				<p:commandButton id="btnMP" value="Login als Meldene-Person"
+					action="#{loginController.registrationMP}"
+					disabled="#{empty loginController.name or empty loginController.tel}"
+					styleClass="login-button" />
+
+				<p:commandButton id="btnBP" value="Login als Bergende-Person"
+					action="#{loginController.registrationBP}"
+					disabled="#{empty loginController.name or empty loginController.tel}"
+					styleClass="login-button" />
+			</div>
+
+			<!-- Benutzerhinweise zur Eingabe -->
+			<div class="description-group">
+				<h:outputText value=" - Anonyme-Meldene-Person: Nur Name nötig" />
+				<br />
+				<h:outputText
+					value=" - Meldene-Person: Name + Telefonnummer nötig (Nur Zahlen)" />
+				<br />
+				<h:outputText
+					value=" - Bergende-Person: Name + Telefonnummer nötig (Nur Zahlen)" />
+			</div>
+
+		</p:card>
+	</h:form>
+
+	<!-- Impressum am Seitenende -->
+	<h:outputText escape="false"
+		value="&lt;strong&gt;Impressum&lt;/strong&gt;&lt;br/&gt;
+                         Ghost Net Fishing – ein Projekt von Shea Sepherd e.V.&lt;br/&gt;
+                         Ozeanstraße 42, 12345 Küstenstadt&lt;br/&gt;
+                         kontakt@sheashepherd.org&lt;br/&gt;
+                         Verantwortlich: Hans Peter" />
+</h:body>
+</html>
